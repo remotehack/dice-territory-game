@@ -236,6 +236,172 @@ func TestBoard_PlacePiece(t *testing.T) {
 			},
 			want: true,
 		},
+		{
+			name: "can place piece for player 2",
+			b:    b,
+			args: args{
+				p: game.Piece{
+					Player: game.Player{
+						ID:    "id-player-2",
+						Name:  "Bob",
+						Score: 0,
+					},
+					Origin: game.Coordinate{X: 3, Y: 12},
+					AdjacentFields: []game.Coordinate{
+						{X: 3, Y: 11},
+						{X: 3, Y: 13},
+						{X: 4, Y: 11},
+						{X: 4, Y: 13},
+						{X: 5, Y: 11},
+						{X: 5, Y: 13},
+						{X: 6, Y: 11},
+						{X: 6, Y: 13},
+
+						{X: 2, Y: 12},
+						{X: 7, Y: 12},
+					},
+					Corners: []game.Coordinate{
+						{X: 3, Y: 12},
+						{X: 7, Y: 12},
+						{X: 7, Y: 12},
+						{X: 3, Y: 12},
+					},
+					Coordinates: []game.Coordinate{
+						{X: 3, Y: 12},
+						{X: 4, Y: 12},
+						{X: 5, Y: 12},
+						{X: 6, Y: 12},
+					},
+					Width:  4,
+					Height: 1,
+				},
+			},
+			want: true,
+		}, {
+			name: "can not place piece for player 2 (intersects)",
+			b:    b,
+			args: args{
+				p: game.Piece{
+					Player: game.Player{
+						ID:    "id-player-2",
+						Name:  "Bob",
+						Score: 0,
+					},
+					Origin: game.Coordinate{X: 4, Y: 12},
+					AdjacentFields: []game.Coordinate{
+						{X: 4, Y: 11},
+						{X: 4, Y: 13},
+						{X: 5, Y: 11},
+						{X: 5, Y: 13},
+						{X: 6, Y: 11},
+						{X: 6, Y: 13},
+						{X: 7, Y: 11},
+						{X: 7, Y: 13},
+
+						{X: 3, Y: 12},
+						{X: 8, Y: 12},
+					},
+					Corners: []game.Coordinate{
+						{X: 4, Y: 12},
+						{X: 8, Y: 12},
+						{X: 8, Y: 12},
+						{X: 4, Y: 12},
+					},
+					Coordinates: []game.Coordinate{
+						{X: 4, Y: 12},
+						{X: 5, Y: 12},
+						{X: 6, Y: 12},
+						{X: 7, Y: 12},
+					},
+					Width:  4,
+					Height: 1,
+				},
+			},
+			want: false,
+		},
+		{
+			name: "can not place piece for player 2 (does not touch anything)",
+			b:    b,
+			args: args{
+				p: game.Piece{
+					Player: game.Player{
+						ID:    "id-player-2",
+						Name:  "Bob",
+						Score: 0,
+					},
+					Origin: game.Coordinate{X: 4, Y: 7},
+					AdjacentFields: []game.Coordinate{
+						{X: 4, Y: 6},
+						{X: 4, Y: 8},
+						{X: 5, Y: 6},
+						{X: 5, Y: 8},
+						{X: 6, Y: 6},
+						{X: 6, Y: 8},
+						{X: 7, Y: 6},
+						{X: 7, Y: 8},
+
+						{X: 3, Y: 7},
+						{X: 8, Y: 7},
+					},
+					Corners: []game.Coordinate{
+						{X: 4, Y: 7},
+						{X: 8, Y: 7},
+						{X: 8, Y: 7},
+						{X: 4, Y: 7},
+					},
+					Coordinates: []game.Coordinate{
+						{X: 4, Y: 7},
+						{X: 5, Y: 7},
+						{X: 6, Y: 7},
+						{X: 7, Y: 7},
+					},
+					Width:  4,
+					Height: 1,
+				},
+			},
+			want: false,
+		},
+		{
+			name: "can not place piece for player 2 (touches p1's, but not p2's)",
+			b:    b,
+			args: args{
+				p: game.Piece{
+					Player: game.Player{
+						ID:    "id-player-2",
+						Name:  "Bob",
+						Score: 0,
+					},
+					Origin: game.Coordinate{X: 5, Y: 3},
+					AdjacentFields: []game.Coordinate{
+						{X: 5, Y: 2},
+						{X: 5, Y: 4},
+						{X: 6, Y: 2},
+						{X: 6, Y: 4},
+						{X: 7, Y: 2},
+						{X: 7, Y: 4},
+						{X: 8, Y: 2},
+						{X: 8, Y: 4},
+						{X: 4, Y: 3},
+						{X: 9, Y: 3},
+					},
+					Corners: []game.Coordinate{
+						{X: 5, Y: 3},
+						{X: 8, Y: 3},
+						{X: 8, Y: 3},
+						{X: 5, Y: 3},
+					},
+					Coordinates: []game.Coordinate{
+						{X: 5, Y: 3},
+						{X: 6, Y: 3},
+						{X: 7, Y: 3},
+						{X: 8, Y: 3},
+					},
+					Width:  4,
+					Height: 1,
+				},
+			},
+			want: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
