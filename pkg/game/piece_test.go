@@ -63,6 +63,20 @@ func TestNewPiece(t *testing.T) {
 					{X: 7, Y: 8},
 					{X: 4, Y: 8},
 				},
+				Coordinates: []game.Coordinate{
+					{X: 4, Y: 6},
+					{X: 4, Y: 7},
+					{X: 4, Y: 8},
+					{X: 5, Y: 6},
+					{X: 5, Y: 7},
+					{X: 5, Y: 8},
+					{X: 6, Y: 6},
+					{X: 6, Y: 7},
+					{X: 6, Y: 8},
+					{X: 7, Y: 6},
+					{X: 7, Y: 7},
+					{X: 7, Y: 8},
+				},
 				Width:  4,
 				Height: 3,
 			},
@@ -141,7 +155,7 @@ func TestNewPiece(t *testing.T) {
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewPiece() got = %v, want %v", got, tt.want)
+				t.Errorf("NewPiece() got = \n%#v, want \n%#v", got, tt.want)
 			}
 		})
 	}

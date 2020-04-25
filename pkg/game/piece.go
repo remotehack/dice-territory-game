@@ -4,6 +4,13 @@ import (
 	"fmt"
 )
 
+const (
+	minPieceWidth  = 0
+	maxPieceWidth  = 6
+	minPieceHeight = 0
+	maxPieceHeight = 6
+)
+
 // Piece holds info about player it belongs to, its own coordinates and dimensions.
 type Piece struct {
 	Player         Player
@@ -15,9 +22,15 @@ type Piece struct {
 	Height         uint8
 }
 
+// Coordinate holds an x/y coordinate pair
+type Coordinate struct {
+	X uint8
+	Y uint8
+}
+
 // NewPiece returns a piece if the width and the height are within a given size constraint.
 func NewPiece(player Player, originX uint8, originY uint8, width uint8, height uint8) (Piece, error) {
-	if width <= 0 || width > 6 || height <= 0 || height > 6 {
+	if width <= minPieceWidth || width > maxPieceWidth || height <= minPieceHeight || height > maxPieceHeight {
 		return Piece{}, fmt.Errorf("can't create piece with these dimensions: width: %d, height: %d", width, height)
 	}
 
@@ -36,12 +49,6 @@ func NewPiece(player Player, originX uint8, originY uint8, width uint8, height u
 	p.Coordinates = p.getAllCoordinates()
 
 	return p, nil
-}
-
-// Coordinate holds an x/y coordinate pair
-type Coordinate struct {
-	X uint8
-	Y uint8
 }
 
 func (p Piece) getCorners() []Coordinate {
@@ -70,7 +77,7 @@ func (p Piece) getCorners() []Coordinate {
 // IsCoordinateWithin checks whether a given coordinate within a piece
 func (p Piece) IsCoordinateWithin(c Coordinate) bool {
 	// check for X
-	if c.X >= p.Origin.X && c.X <= p.Origin.X+p.Width-1 && c.Y >= p.Origin.Y && c.Y <= p.Origin.Y+p.Height-1 {
+	if c.X >= p.Origin.X && c.X <= p.Origin.X+p.Width && c.Y >= p.Origin.Y && c.Y <= p.Origin.Y+p.Height {
 		return true
 	}
 
