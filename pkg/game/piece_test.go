@@ -148,43 +148,133 @@ func TestNewPiece(t *testing.T) {
 	}
 }
 
-//
-//func TestPiece_IsAdjacent(t *testing.T) {
-//	type fields struct {
-//		Player         game.Player
-//		Origin         game.Coordinate
-//		AdjacentFields []Coordinate
-//		Corners        []Coordinate
-//		Width          uint8
-//		Height         uint8
-//	}
-//	type args struct {
-//		c game.Coordinate
-//	}
-//	tests := []struct {
-//		name   string
-//		fields fields
-//		args   args
-//		want   bool
-//	}{
-//		// TODO: Add test cases.
-//	}
-//	for _, tt := range tests {
-//		t.Run(tt.name, func(t *testing.T) {
-//			p := game.Piece{
-//				Player:         tt.fields.Player,
-//				Origin:         tt.fields.Origin,
-//				AdjacentFields: tt.fields.AdjacentFields,
-//				Corners:        tt.fields.Corners,
-//				Width:          tt.fields.Width,
-//				Height:         tt.fields.Height,
-//			}
-//			if got := p.IsAdjacent(tt.args.c); got != tt.want {
-//				t.Errorf("IsAdjacent() = %v, want %v", got, tt.want)
-//			}
-//		})
-//	}
-//}
+func TestPiece_IsAdjacent(t *testing.T) {
+
+	type args struct {
+		p game.Piece
+		c game.Coordinate
+	}
+
+	p := game.Piece{
+		Player: game.Player{
+			ID:    "playerid-1",
+			Name:  "John",
+			Score: 0,
+		},
+		Origin: game.Coordinate{X: 4, Y: 6},
+		AdjacentFields: []game.Coordinate{
+			{X: 4, Y: 5},
+			{X: 4, Y: 9},
+			{X: 5, Y: 5},
+			{X: 5, Y: 9},
+			{X: 6, Y: 5},
+			{X: 6, Y: 9},
+			{X: 7, Y: 5},
+			{X: 7, Y: 9},
+			{X: 3, Y: 6},
+			{X: 8, Y: 6},
+			{X: 3, Y: 7},
+			{X: 8, Y: 7},
+			{X: 3, Y: 8},
+			{X: 8, Y: 8},
+		},
+		Corners: []game.Coordinate{
+			{X: 4, Y: 6},
+			{X: 7, Y: 6},
+			{X: 7, Y: 8},
+			{X: 4, Y: 8},
+		},
+		Width:  4,
+		Height: 3,
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "found adjacent coordinate on top",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 6, Y: 5},
+			},
+			want: true,
+		},
+		{
+			name: "found adjacent coordinate on bottom",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 6, Y: 9},
+			},
+			want: true,
+		},
+		{
+			name: "found adjacent coordinate on left",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 3, Y: 7},
+			},
+			want: true,
+		},
+		{
+			name: "found adjacent coordinate on right",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 8, Y: 7},
+			},
+			want: true,
+		},
+		{
+			name: "not found adjacent coordinate in corner",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 3, Y: 5},
+			},
+			want: false,
+		},
+		{
+			name: "not found adjacent coordinate on top: too far",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 6, Y: 4},
+			},
+			want: false,
+		},
+		{
+			name: "not found adjacent coordinate on bottom: too far",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 6, Y: 10},
+			},
+			want: false,
+		},
+		{
+			name: "not found adjacent coordinate on left: too far",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 2, Y: 7},
+			},
+			want: false,
+		},
+		{
+			name: "not found adjacent coordinate on right: too far",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 9, Y: 7},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.args.p.IsAdjacent(tt.args.c); got != tt.want {
+				t.Errorf("IsAdjacent() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 //
 //func TestPiece_IsCoordinateWithin(t *testing.T) {
 //	type fields struct {
