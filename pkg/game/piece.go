@@ -10,6 +10,7 @@ type Piece struct {
 	Origin         Coordinate
 	AdjacentFields []Coordinate
 	Corners        []Coordinate
+	Coordinates    []Coordinate
 	Width          uint8
 	Height         uint8
 }
@@ -32,6 +33,7 @@ func NewPiece(player Player, originX uint8, originY uint8, width uint8, height u
 
 	p.AdjacentFields = p.getAdjacentFields()
 	p.Corners = p.getCorners()
+	p.Coordinates = p.getAllCoordinates()
 
 	return p, nil
 }
@@ -110,5 +112,18 @@ func (p Piece) getAdjacentFields() []Coordinate {
 		})
 	}
 
+	return a
+}
+
+func (p Piece) getAllCoordinates() []Coordinate {
+	var a []Coordinate
+	for i := uint8(0); i < p.Width; i++ {
+		for j := uint8(0); j < p.Height; j++ {
+			a = append(a, Coordinate{
+				X: p.Origin.X + i,
+				Y: p.Origin.Y + j,
+			})
+		}
+	}
 	return a
 }
