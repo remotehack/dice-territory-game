@@ -374,13 +374,29 @@ func TestPiece_IsCoordinateWithin(t *testing.T) {
 			{X: 7, Y: 8},
 			{X: 4, Y: 8},
 		},
+		Coordinates: []game.Coordinate{
+			{X: 4, Y: 6},
+			{X: 5, Y: 6},
+			{X: 6, Y: 6},
+			{X: 7, Y: 6},
+
+			{X: 4, Y: 7},
+			{X: 5, Y: 7},
+			{X: 6, Y: 7},
+			{X: 7, Y: 7},
+
+			{X: 4, Y: 8},
+			{X: 5, Y: 8},
+			{X: 6, Y: 8},
+			{X: 7, Y: 8},
+		},
 		Width:  4,
 		Height: 3,
 	}
 
 	type args struct {
-		p game.Piece
-		c game.Coordinate
+		p  game.Piece
+		cs []game.Coordinate
 	}
 	tests := []struct {
 		name string
@@ -388,82 +404,58 @@ func TestPiece_IsCoordinateWithin(t *testing.T) {
 		want bool
 	}{
 		{
-			name: "coordinate is within the piece",
+			name: "coordinates are within the piece",
 			args: args{
 				p: p,
-				c: game.Coordinate{X: 6, Y: 7},
+				cs: []game.Coordinate{
+					{X: 4, Y: 6},
+					{X: 5, Y: 6},
+					{X: 6, Y: 6},
+					{X: 7, Y: 6},
+
+					{X: 4, Y: 7},
+					{X: 5, Y: 7},
+					{X: 6, Y: 7},
+					{X: 7, Y: 7},
+
+					{X: 4, Y: 8},
+					{X: 5, Y: 8},
+					{X: 6, Y: 8},
+					{X: 7, Y: 8},
+				},
 			},
 			want: true,
 		},
 		{
-			name: "coordinate is within the piece on the edge on top",
+			name: "coordinates are not within the piece",
 			args: args{
 				p: p,
-				c: game.Coordinate{X: 5, Y: 6},
-			},
-			want: true,
-		},
-		{
-			name: "coordinate is within the piece on the edge on bottom",
-			args: args{
-				p: p,
-				c: game.Coordinate{X: 5, Y: 8},
-			},
-			want: true,
-		},
-		{
-			name: "coordinate is within the piece on the edge on left",
-			args: args{
-				p: p,
-				c: game.Coordinate{X: 4, Y: 7},
-			},
-			want: true,
-		},
-		{
-			name: "coordinate is within the piece on the edge on right",
-			args: args{
-				p: p,
-				c: game.Coordinate{X: 7, Y: 7},
-			},
-			want: true,
-		},
-		{
-			name: "coordinate is outside the piece on top",
-			args: args{
-				p: p,
-				c: game.Coordinate{X: 6, Y: 4},
-			},
-			want: false,
-		},
-		{
-			name: "coordinate is outside the piece on bottom",
-			args: args{
-				p: p,
-				c: game.Coordinate{X: 6, Y: 10},
-			},
-			want: false,
-		},
-		{
-			name: "coordinate is outside the piece on left",
-			args: args{
-				p: p,
-				c: game.Coordinate{X: 2, Y: 4},
-			},
-			want: false,
-		},
-		{
-			name: "coordinate is outside the piece on right",
-			args: args{
-				p: p,
-				c: game.Coordinate{X: 9, Y: 4},
+				cs: []game.Coordinate{
+					{X: 4, Y: 5},
+					{X: 4, Y: 9},
+					{X: 5, Y: 5},
+					{X: 5, Y: 9},
+					{X: 6, Y: 5},
+					{X: 6, Y: 9},
+					{X: 7, Y: 5},
+					{X: 7, Y: 9},
+					{X: 3, Y: 6},
+					{X: 8, Y: 6},
+					{X: 3, Y: 7},
+					{X: 8, Y: 7},
+					{X: 3, Y: 8},
+					{X: 8, Y: 8},
+				},
 			},
 			want: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := tt.args.p.IsCoordinateWithin(tt.args.c); got != tt.want {
-				t.Errorf("IsCoordinateWithin() = %v, want %v", got, tt.want)
+			for _, c := range tt.args.cs {
+				if got := tt.args.p.IsCoordinateWithin(c); got != tt.want {
+					t.Errorf("IsCoordinateWithin() = %v, want %v,\ncoordinate: %#v\n\n", got, tt.want, c)
+				}
 			}
 		})
 	}
