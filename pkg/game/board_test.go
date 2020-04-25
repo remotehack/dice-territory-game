@@ -1,15 +1,16 @@
 package game_test
 
 import (
-	"javorszky/dice-territory-game/v2/pkg/game"
 	"reflect"
 	"testing"
+
+	"javorszky/dice-territory-game/v2/pkg/game"
 )
 
 func TestNewBoard(t *testing.T) {
 	type args struct {
-		width  int8
-		height int8
+		width  uint8
+		height uint8
 	}
 	tests := []struct {
 		name    string

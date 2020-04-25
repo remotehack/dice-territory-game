@@ -10,12 +10,13 @@ const (
 )
 
 type Board struct {
-	Width  int8
-	Height int8
+	Width  uint8
+	Height uint8
 	Pieces []Piece
 }
 
-func NewBoard(width int8, height int8) (Board, error) {
+// Returns a new instance of a board with given height and width.
+func NewBoard(width uint8, height uint8) (Board, error) {
 	if !isBetween(height, minBoardHeight, maxBoardHeight) {
 		return Board{}, fmt.Errorf("board height is out of bounds. Got %d, need to be between %d and %d inclusive", height, minBoardHeight, maxBoardHeight)
 	}
@@ -25,6 +26,7 @@ func NewBoard(width int8, height int8) (Board, error) {
 	return Board{Width: width, Height: height, Pieces: []Piece{}}, nil
 }
 
-func isBetween(what int8, lowerBoundary int8, upperBoundary int8) bool {
+// Utility function to check whether the board is the right size.
+func isBetween(what uint8, lowerBoundary uint8, upperBoundary uint8) bool {
 	return what >= lowerBoundary && what <= upperBoundary
 }

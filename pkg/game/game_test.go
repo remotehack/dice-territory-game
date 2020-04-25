@@ -1,16 +1,17 @@
 package game_test
 
 import (
-	"javorszky/dice-territory-game/v2/pkg/game"
 	"reflect"
 	"testing"
+
+	"javorszky/dice-territory-game/v2/pkg/game"
 )
 
 func TestNew(t *testing.T) {
 	type args struct {
 		Session     string
-		BoardHeight int8
-		BoardWidth  int8
+		BoardHeight uint8
+		BoardWidth  uint8
 		PlayerOne   string
 		PlayerTwo   string
 	}
