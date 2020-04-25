@@ -396,6 +396,38 @@ func TestPiece_IsCoordinateWithin(t *testing.T) {
 			want: true,
 		},
 		{
+			name: "coordinate is within the piece on the edge on top",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 5, Y: 6},
+			},
+			want: true,
+		},
+		{
+			name: "coordinate is within the piece on the edge on bottom",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 5, Y: 8},
+			},
+			want: true,
+		},
+		{
+			name: "coordinate is within the piece on the edge on left",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 4, Y: 7},
+			},
+			want: true,
+		},
+		{
+			name: "coordinate is within the piece on the edge on right",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 7, Y: 7},
+			},
+			want: true,
+		},
+		{
 			name: "coordinate is outside the piece on top",
 			args: args{
 				p: p,
