@@ -1,5 +1,9 @@
 package game
 
+import (
+	"fmt"
+)
+
 type Piece struct {
 	Player         Player
 	Origin         Coordinate
@@ -9,7 +13,11 @@ type Piece struct {
 	Height         uint8
 }
 
-func NewPiece(player Player, originX uint8, originY uint8, width uint8, height uint8) Piece {
+func NewPiece(player Player, originX uint8, originY uint8, width uint8, height uint8) (Piece, error) {
+	if width <= 0 || width > 6 || height <= 0 || height > 6 {
+		return Piece{}, fmt.Errorf("can't create piece with these dimensions: width: %d, height: %d", width, height)
+	}
+
 	p := Piece{
 		Player: player,
 		Origin: Coordinate{
@@ -23,7 +31,7 @@ func NewPiece(player Player, originX uint8, originY uint8, width uint8, height u
 	p.AdjacentFields = p.getAdjacentFields()
 	p.Corners = p.getCorners()
 
-	return p
+	return p, nil
 }
 
 type Coordinate struct {

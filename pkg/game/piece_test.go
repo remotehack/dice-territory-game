@@ -16,9 +16,10 @@ func TestNewPiece(t *testing.T) {
 		height  uint8
 	}
 	tests := []struct {
-		name string
-		args args
-		want game.Piece
+		name    string
+		args    args
+		want    game.Piece
+		wantErr bool
 	}{
 		{
 			name: "successfully create piece",
@@ -65,12 +66,83 @@ func TestNewPiece(t *testing.T) {
 				Width:  4,
 				Height: 3,
 			},
+			wantErr: false,
+		},
+		{
+			name: "can't create piece with too short width",
+			args: args{
+				player: game.Player{
+					ID:    "playerid-1",
+					Name:  "Bob",
+					Score: 0,
+				},
+				originX: 3,
+				originY: 3,
+				width:   0,
+				height:  6,
+			},
+			want:    game.Piece{},
+			wantErr: true,
+		},
+		{
+			name: "can't create piece with too short height",
+			args: args{
+				player: game.Player{
+					ID:    "playerid-1",
+					Name:  "Bob",
+					Score: 0,
+				},
+				originX: 3,
+				originY: 3,
+				width:   3,
+				height:  0,
+			},
+			want:    game.Piece{},
+			wantErr: true,
+		},
+		{
+			name: "can't create piece with too long height",
+			args: args{
+				player: game.Player{
+					ID:    "playerid-1",
+					Name:  "Bob",
+					Score: 0,
+				},
+				originX: 3,
+				originY: 3,
+				width:   3,
+				height:  10,
+			},
+			want:    game.Piece{},
+			wantErr: true,
+		},
+		{
+			name: "can't create piece with too long width",
+			args: args{
+				player: game.Player{
+					ID:    "playerid-1",
+					Name:  "Bob",
+					Score: 0,
+				},
+				originX: 3,
+				originY: 3,
+				width:   10,
+				height:  3,
+			},
+			want:    game.Piece{},
+			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := game.NewPiece(tt.args.player, tt.args.originX, tt.args.originY, tt.args.width, tt.args.height); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewPiece() = \n%v, want \n%v", got, tt.want)
+			t.Parallel()
+			got, err := game.NewPiece(tt.args.player, tt.args.originX, tt.args.originY, tt.args.width, tt.args.height)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("NewPiece() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewPiece() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
