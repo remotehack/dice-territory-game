@@ -274,106 +274,95 @@ func TestPiece_IsAdjacent(t *testing.T) {
 	}
 }
 
-//
-//func TestPiece_IsCoordinateWithin(t *testing.T) {
-//	type fields struct {
-//		Player         game.Player
-//		Origin         game.Coordinate
-//		AdjacentFields []Coordinate
-//		Corners        []Coordinate
-//		Width          uint8
-//		Height         uint8
-//	}
-//	type args struct {
-//		c game.Coordinate
-//	}
-//	tests := []struct {
-//		name   string
-//		fields fields
-//		args   args
-//		want   bool
-//	}{
-//		// TODO: Add test cases.
-//	}
-//	for _, tt := range tests {
-//		t.Run(tt.name, func(t *testing.T) {
-//			p := game.Piece{
-//				Player:         tt.fields.Player,
-//				Origin:         tt.fields.Origin,
-//				AdjacentFields: tt.fields.AdjacentFields,
-//				Corners:        tt.fields.Corners,
-//				Width:          tt.fields.Width,
-//				Height:         tt.fields.Height,
-//			}
-//			if got := p.IsCoordinateWithin(tt.args.c); got != tt.want {
-//				t.Errorf("IsCoordinateWithin() = %v, want %v", got, tt.want)
-//			}
-//		})
-//	}
-//}
-//
-//func TestPiece_getAdjacentFields(t *testing.T) {
-//	type fields struct {
-//		Player         game.Player
-//		Origin         game.Coordinate
-//		AdjacentFields []Coordinate
-//		Corners        []Coordinate
-//		Width          uint8
-//		Height         uint8
-//	}
-//	tests := []struct {
-//		name   string
-//		fields fields
-//		want   []Coordinate
-//	}{
-//		// TODO: Add test cases.
-//	}
-//	for _, tt := range tests {
-//		t.Run(tt.name, func(t *testing.T) {
-//			p := game.Piece{
-//				Player:         tt.fields.Player,
-//				Origin:         tt.fields.Origin,
-//				AdjacentFields: tt.fields.AdjacentFields,
-//				Corners:        tt.fields.Corners,
-//				Width:          tt.fields.Width,
-//				Height:         tt.fields.Height,
-//			}
-//			if got := p.getAdjacentFields(); !reflect.DeepEqual(got, tt.want) {
-//				t.Errorf("getAdjacentFields() = %v, want %v", got, tt.want)
-//			}
-//		})
-//	}
-//}
-//
-//func TestPiece_getCorners(t *testing.T) {
-//	type fields struct {
-//		Player         game.Player
-//		Origin         game.Coordinate
-//		AdjacentFields []Coordinate
-//		Corners        []Coordinate
-//		Width          uint8
-//		Height         uint8
-//	}
-//	tests := []struct {
-//		name   string
-//		fields fields
-//		want   []Coordinate
-//	}{
-//		// TODO: Add test cases.
-//	}
-//	for _, tt := range tests {
-//		t.Run(tt.name, func(t *testing.T) {
-//			p := game.Piece{
-//				Player:         tt.fields.Player,
-//				Origin:         tt.fields.Origin,
-//				AdjacentFields: tt.fields.AdjacentFields,
-//				Corners:        tt.fields.Corners,
-//				Width:          tt.fields.Width,
-//				Height:         tt.fields.Height,
-//			}
-//			if got := p.getCorners(); !reflect.DeepEqual(got, tt.want) {
-//				t.Errorf("getCorners() = %v, want %v", got, tt.want)
-//			}
-//		})
-//	}
-//}
+func TestPiece_IsCoordinateWithin(t *testing.T) {
+	p := game.Piece{
+		Player: game.Player{
+			ID:    "playerid-1",
+			Name:  "John",
+			Score: 0,
+		},
+		Origin: game.Coordinate{X: 4, Y: 6},
+		AdjacentFields: []game.Coordinate{
+			{X: 4, Y: 5},
+			{X: 4, Y: 9},
+			{X: 5, Y: 5},
+			{X: 5, Y: 9},
+			{X: 6, Y: 5},
+			{X: 6, Y: 9},
+			{X: 7, Y: 5},
+			{X: 7, Y: 9},
+			{X: 3, Y: 6},
+			{X: 8, Y: 6},
+			{X: 3, Y: 7},
+			{X: 8, Y: 7},
+			{X: 3, Y: 8},
+			{X: 8, Y: 8},
+		},
+		Corners: []game.Coordinate{
+			{X: 4, Y: 6},
+			{X: 7, Y: 6},
+			{X: 7, Y: 8},
+			{X: 4, Y: 8},
+		},
+		Width:  4,
+		Height: 3,
+	}
+
+	type args struct {
+		p game.Piece
+		c game.Coordinate
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "coordinate is within the piece",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 6, Y: 7},
+			},
+			want: true,
+		},
+		{
+			name: "coordinate is outside the piece on top",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 6, Y: 4},
+			},
+			want: false,
+		},
+		{
+			name: "coordinate is outside the piece on bottom",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 6, Y: 10},
+			},
+			want: false,
+		},
+		{
+			name: "coordinate is outside the piece on left",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 2, Y: 4},
+			},
+			want: false,
+		},
+		{
+			name: "coordinate is outside the piece on right",
+			args: args{
+				p: p,
+				c: game.Coordinate{X: 9, Y: 4},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.args.p.IsCoordinateWithin(tt.args.c); got != tt.want {
+				t.Errorf("IsCoordinateWithin() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
