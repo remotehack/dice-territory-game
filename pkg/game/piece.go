@@ -77,7 +77,7 @@ func (p Piece) getCorners() []Coordinate {
 // IsCoordinateWithin checks whether a given coordinate within a piece
 func (p Piece) IsCoordinateWithin(c Coordinate) bool {
 	// check for X
-	if c.X >= p.Origin.X && c.X <= p.Origin.X+p.Width && c.Y >= p.Origin.Y && c.Y <= p.Origin.Y+p.Height {
+	if c.X >= p.Origin.X && c.X <= p.Origin.X+p.Width-1 && c.Y >= p.Origin.Y && c.Y <= p.Origin.Y+p.Height-1 {
 		return true
 	}
 
