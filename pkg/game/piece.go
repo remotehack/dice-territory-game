@@ -4,6 +4,7 @@ import (
 	"fmt"
 )
 
+// Piece holds info about player it belongs to, its own coordinates and dimensions.
 type Piece struct {
 	Player         Player
 	Origin         Coordinate
@@ -13,6 +14,7 @@ type Piece struct {
 	Height         uint8
 }
 
+// NewPiece returns a piece if the width and the height are within a given size constraint.
 func NewPiece(player Player, originX uint8, originY uint8, width uint8, height uint8) (Piece, error) {
 	if width <= 0 || width > 6 || height <= 0 || height > 6 {
 		return Piece{}, fmt.Errorf("can't create piece with these dimensions: width: %d, height: %d", width, height)
@@ -34,6 +36,7 @@ func NewPiece(player Player, originX uint8, originY uint8, width uint8, height u
 	return p, nil
 }
 
+// Coordinate holds an x/y coordinate pair
 type Coordinate struct {
 	X uint8
 	Y uint8
@@ -62,6 +65,7 @@ func (p Piece) getCorners() []Coordinate {
 	return c
 }
 
+// IsCoordinateWithin checks whether a given coordinate within a piece
 func (p Piece) IsCoordinateWithin(c Coordinate) bool {
 	// check for X
 	if c.X >= p.Origin.X && c.X <= p.Origin.X+p.Width-1 && c.Y >= p.Origin.Y && c.Y <= p.Origin.Y+p.Height-1 {
@@ -71,6 +75,7 @@ func (p Piece) IsCoordinateWithin(c Coordinate) bool {
 	return false
 }
 
+// IsAdjacent checks whether a given coordinate is adjacent to a piece. Corners are not adjacent.
 func (p Piece) IsAdjacent(c Coordinate) bool {
 	for _, val := range p.AdjacentFields {
 		if c == val {
