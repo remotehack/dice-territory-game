@@ -1,6 +1,9 @@
 package game
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	minBoardHeight = 12
@@ -66,11 +69,11 @@ func (b Board) canPlacePiece(p Piece) bool {
 	return false
 }
 
-func (b Board) PlacePiece(p Piece) bool {
+func (b Board) PlacePiece(p Piece) ([]Piece, error) {
 	if !b.canPlacePiece(p) {
-		return false
+		return b.Pieces, errors.New("can't place piece there")
 	}
 
 	b.Pieces = append(b.Pieces, p)
-	return true
+	return b.Pieces, nil
 }
