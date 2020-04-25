@@ -28,10 +28,10 @@ func NewBoard(width uint8, height uint8) (Board, error) {
 	var c []Coordinate
 
 	// Top left corner (start for player 1)
-	c = append(c, Coordinate{X: 0, Y: 0})
+	c = append(c, Coordinate{X: 1, Y: 1})
 
 	// Bottom right corner (start for player 2)
-	c = append(c, Coordinate{X: width - 1, Y: height - 1})
+	c = append(c, Coordinate{X: width, Y: height})
 
 	return Board{Width: width, Height: height, Corners: c, Pieces: []Piece{}}, nil
 }
@@ -39,4 +39,38 @@ func NewBoard(width uint8, height uint8) (Board, error) {
 // Utility function to check whether the board is the right size.
 func isBetween(what uint8, lowerBoundary uint8, upperBoundary uint8) bool {
 	return what >= lowerBoundary && what <= upperBoundary
+}
+
+func (b Board) canPlacePiece(p Piece) bool {
+	// If any of the coordinates of the new piece intersect ANY pieces, it can't be placed.
+	for _, piece := range b.Pieces {
+		for _, c := range p.Coordinates {
+			if piece.IsCoordinateWithin(c) {
+				return false
+			}
+		}
+	}
+
+	// If any of the coordinates of the new piece is adjacent to our OWN pieces, it _can_ be placed.
+	for _, piece := range b.Pieces {
+		if p.Player.ID != piece.Player.ID {
+			continue
+		}
+		for _, c := range p.Coordinates {
+			if piece.IsAdjacent(c) {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+func (b Board) PlacePiece(p Piece) bool {
+	if !b.canPlacePiece(p) {
+		return false
+	}
+
+	b.Pieces = append(b.Pieces, p)
+	return true
 }
