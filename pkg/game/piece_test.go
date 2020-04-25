@@ -9,7 +9,7 @@ import (
 
 func TestNewPiece(t *testing.T) {
 	type args struct {
-		player  game.Player
+		player  string
 		originX uint8
 		originY uint8
 		width   uint8
@@ -24,22 +24,14 @@ func TestNewPiece(t *testing.T) {
 		{
 			name: "successfully create piece",
 			args: args{
-				player: game.Player{
-					ID:    "playerid-1",
-					Name:  "John",
-					Score: 0,
-				},
+				player:  "playerid-1",
 				originX: 4,
 				originY: 6,
 				width:   4,
 				height:  3,
 			},
 			want: game.Piece{
-				Player: game.Player{
-					ID:    "playerid-1",
-					Name:  "John",
-					Score: 0,
-				},
+				Player: "playerid-1",
 				Origin: game.Coordinate{X: 4, Y: 6},
 				AdjacentFields: []game.Coordinate{
 					{X: 4, Y: 5},
@@ -85,11 +77,7 @@ func TestNewPiece(t *testing.T) {
 		{
 			name: "can't create piece with too short width",
 			args: args{
-				player: game.Player{
-					ID:    "playerid-1",
-					Name:  "Bob",
-					Score: 0,
-				},
+				player:  "playerid-1",
 				originX: 3,
 				originY: 3,
 				width:   0,
@@ -101,11 +89,7 @@ func TestNewPiece(t *testing.T) {
 		{
 			name: "can't create piece with too short height",
 			args: args{
-				player: game.Player{
-					ID:    "playerid-1",
-					Name:  "Bob",
-					Score: 0,
-				},
+				player:  "playerid-1",
 				originX: 3,
 				originY: 3,
 				width:   3,
@@ -117,11 +101,7 @@ func TestNewPiece(t *testing.T) {
 		{
 			name: "can't create piece with too long height",
 			args: args{
-				player: game.Player{
-					ID:    "playerid-1",
-					Name:  "Bob",
-					Score: 0,
-				},
+				player:  "playerid-1",
 				originX: 3,
 				originY: 3,
 				width:   3,
@@ -133,11 +113,7 @@ func TestNewPiece(t *testing.T) {
 		{
 			name: "can't create piece with too long width",
 			args: args{
-				player: game.Player{
-					ID:    "playerid-1",
-					Name:  "Bob",
-					Score: 0,
-				},
+				player:  "playerid-1",
 				originX: 3,
 				originY: 3,
 				width:   10,
@@ -149,22 +125,14 @@ func TestNewPiece(t *testing.T) {
 		{
 			name: "successfully create 1x1 piece",
 			args: args{
-				player: game.Player{
-					ID:    "playerid-1",
-					Name:  "John",
-					Score: 0,
-				},
+				player:  "playerid-1",
 				originX: 4,
 				originY: 6,
 				width:   1,
 				height:  1,
 			},
 			want: game.Piece{
-				Player: game.Player{
-					ID:    "playerid-1",
-					Name:  "John",
-					Score: 0,
-				},
+				Player: "playerid-1",
 				Origin: game.Coordinate{X: 4, Y: 6},
 				AdjacentFields: []game.Coordinate{
 					{X: 4, Y: 5},
@@ -209,11 +177,7 @@ func TestPiece_IsAdjacent(t *testing.T) {
 	}
 
 	p := game.Piece{
-		Player: game.Player{
-			ID:    "playerid-1",
-			Name:  "John",
-			Score: 0,
-		},
+		Player: "playerid-1",
 		Origin: game.Coordinate{X: 4, Y: 6},
 		AdjacentFields: []game.Coordinate{
 			{X: 4, Y: 5},
@@ -350,11 +314,7 @@ func TestPiece_IsAdjacent(t *testing.T) {
 
 func TestPiece_IsCoordinateWithin(t *testing.T) {
 	p := game.Piece{
-		Player: game.Player{
-			ID:    "playerid-1",
-			Name:  "John",
-			Score: 0,
-		},
+		Player: "playerid-1",
 		Origin: game.Coordinate{X: 4, Y: 6},
 		AdjacentFields: []game.Coordinate{
 			{X: 4, Y: 5},

@@ -44,7 +44,7 @@ func isBetween(what uint8, lowerBoundary uint8, upperBoundary uint8) bool {
 	return what >= lowerBoundary && what <= upperBoundary
 }
 
-func (b Board) canPlacePiece(p Piece) bool {
+func (b *Board) canPlacePiece(p Piece) bool {
 	// If any of the coordinates of the new piece intersect ANY pieces, it can't be placed.
 	for _, piece := range b.Pieces {
 		for _, c := range p.Coordinates {
@@ -56,7 +56,7 @@ func (b Board) canPlacePiece(p Piece) bool {
 
 	// If any of the coordinates of the new piece is adjacent to our OWN pieces, it _can_ be placed.
 	for _, piece := range b.Pieces {
-		if p.Player.ID != piece.Player.ID {
+		if p.Player != piece.Player {
 			continue
 		}
 		for _, c := range p.Coordinates {
@@ -69,11 +69,11 @@ func (b Board) canPlacePiece(p Piece) bool {
 	return false
 }
 
-func (b Board) PlacePiece(p Piece) ([]Piece, error) {
+func (b *Board) PlacePiece(p Piece) (*Board, error) {
 	if !b.canPlacePiece(p) {
-		return b.Pieces, errors.New("can't place piece there")
+		return b, errors.New("can't place piece there")
 	}
 
 	b.Pieces = append(b.Pieces, p)
-	return b.Pieces, nil
+	return b, nil
 }

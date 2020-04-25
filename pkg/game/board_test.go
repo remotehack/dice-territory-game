@@ -88,11 +88,7 @@ func TestNewBoard(t *testing.T) {
 
 func TestBoard_PlacePiece(t *testing.T) {
 	piece1 := game.Piece{
-		Player: game.Player{
-			ID:    "id-player-1",
-			Name:  "Alice",
-			Score: 0,
-		},
+		Player: "id-player-1",
 		Origin: game.Coordinate{X: 1, Y: 1},
 		AdjacentFields: []game.Coordinate{
 			{X: 1, Y: 0},
@@ -140,13 +136,8 @@ func TestBoard_PlacePiece(t *testing.T) {
 		Width:  4,
 		Height: 4,
 	}
-
 	piece2 := game.Piece{
-		Player: game.Player{
-			ID:    "id-player-2",
-			Name:  "Bob",
-			Score: 0,
-		},
+		Player: "id-player-2",
 		Origin: game.Coordinate{X: 7, Y: 11},
 		AdjacentFields: []game.Coordinate{
 			{X: 7, Y: 10},
@@ -175,6 +166,69 @@ func TestBoard_PlacePiece(t *testing.T) {
 		Height: 2,
 	}
 
+	newPieceP1 := game.Piece{
+		Player: "id-player-1",
+		Origin: game.Coordinate{X: 5, Y: 3},
+		AdjacentFields: []game.Coordinate{
+			{X: 5, Y: 2},
+			{X: 5, Y: 4},
+			{X: 6, Y: 2},
+			{X: 6, Y: 4},
+			{X: 7, Y: 2},
+			{X: 7, Y: 4},
+			{X: 8, Y: 2},
+			{X: 8, Y: 4},
+			{X: 4, Y: 3},
+			{X: 9, Y: 3},
+		},
+		Corners: []game.Coordinate{
+			{X: 5, Y: 3},
+			{X: 8, Y: 3},
+			{X: 8, Y: 3},
+			{X: 5, Y: 3},
+		},
+		Coordinates: []game.Coordinate{
+			{X: 5, Y: 3},
+			{X: 6, Y: 3},
+			{X: 7, Y: 3},
+			{X: 8, Y: 3},
+		},
+		Width:  4,
+		Height: 1,
+	}
+
+	newPieceP2 := game.Piece{
+		Player: "id-player-2",
+		Origin: game.Coordinate{X: 3, Y: 12},
+		AdjacentFields: []game.Coordinate{
+			{X: 3, Y: 11},
+			{X: 3, Y: 13},
+			{X: 4, Y: 11},
+			{X: 4, Y: 13},
+			{X: 5, Y: 11},
+			{X: 5, Y: 13},
+			{X: 6, Y: 11},
+			{X: 6, Y: 13},
+
+			{X: 2, Y: 12},
+			{X: 7, Y: 12},
+		},
+		Corners: []game.Coordinate{
+			{X: 3, Y: 12},
+			{X: 7, Y: 12},
+			{X: 7, Y: 12},
+			{X: 3, Y: 12},
+		},
+		Coordinates: []game.Coordinate{
+			{X: 3, Y: 12},
+			{X: 4, Y: 12},
+			{X: 5, Y: 12},
+			{X: 6, Y: 12},
+		},
+		Width:  4,
+		Height: 1,
+	}
+
 	b := game.Board{
 		Width:  8,
 		Height: 12,
@@ -197,84 +251,28 @@ func TestBoard_PlacePiece(t *testing.T) {
 		name    string
 		b       game.Board
 		args    args
-		want    []game.Piece
+		want    game.Board
 		wantErr bool
 	}{
 		{
 			name: "can place piece for player 1",
 			b:    b,
 			args: args{
-				p: game.Piece{
-					Player: game.Player{
-						ID:    "id-player-1",
-						Name:  "Alice",
-						Score: 0,
-					},
-					Origin: game.Coordinate{X: 5, Y: 3},
-					AdjacentFields: []game.Coordinate{
-						{X: 5, Y: 2},
-						{X: 5, Y: 4},
-						{X: 6, Y: 2},
-						{X: 6, Y: 4},
-						{X: 7, Y: 2},
-						{X: 7, Y: 4},
-						{X: 8, Y: 2},
-						{X: 8, Y: 4},
-						{X: 4, Y: 3},
-						{X: 9, Y: 3},
-					},
-					Corners: []game.Coordinate{
-						{X: 5, Y: 3},
-						{X: 8, Y: 3},
-						{X: 8, Y: 3},
-						{X: 5, Y: 3},
-					},
-					Coordinates: []game.Coordinate{
-						{X: 5, Y: 3},
-						{X: 6, Y: 3},
-						{X: 7, Y: 3},
-						{X: 8, Y: 3},
-					},
-					Width:  4,
-					Height: 1,
-				},
+				p: newPieceP1,
 			},
-			want: []game.Piece{
-				piece1,
-				piece2,
-				{
-					Player: game.Player{
-						ID:    "id-player-1",
-						Name:  "Alice",
-						Score: 0,
-					},
-					Origin: game.Coordinate{X: 5, Y: 3},
-					AdjacentFields: []game.Coordinate{
-						{X: 5, Y: 2},
-						{X: 5, Y: 4},
-						{X: 6, Y: 2},
-						{X: 6, Y: 4},
-						{X: 7, Y: 2},
-						{X: 7, Y: 4},
-						{X: 8, Y: 2},
-						{X: 8, Y: 4},
-						{X: 4, Y: 3},
-						{X: 9, Y: 3},
-					},
-					Corners: []game.Coordinate{
-						{X: 5, Y: 3},
-						{X: 8, Y: 3},
-						{X: 8, Y: 3},
-						{X: 5, Y: 3},
-					},
-					Coordinates: []game.Coordinate{
-						{X: 5, Y: 3},
-						{X: 6, Y: 3},
-						{X: 7, Y: 3},
-						{X: 8, Y: 3},
-					},
-					Width:  4,
-					Height: 1,
+			want: game.Board{
+				Width:  8,
+				Height: 12,
+				Corners: []game.Coordinate{
+					{X: 1, Y: 1},
+					{X: 8, Y: 1},
+					{X: 8, Y: 12},
+					{X: 1, Y: 12},
+				},
+				Pieces: []game.Piece{
+					piece1,
+					piece2,
+					newPieceP1,
 				},
 			},
 			wantErr: false,
@@ -283,79 +281,21 @@ func TestBoard_PlacePiece(t *testing.T) {
 			name: "can place piece for player 2",
 			b:    b,
 			args: args{
-				p: game.Piece{
-					Player: game.Player{
-						ID:    "id-player-2",
-						Name:  "Bob",
-						Score: 0,
-					},
-					Origin: game.Coordinate{X: 3, Y: 12},
-					AdjacentFields: []game.Coordinate{
-						{X: 3, Y: 11},
-						{X: 3, Y: 13},
-						{X: 4, Y: 11},
-						{X: 4, Y: 13},
-						{X: 5, Y: 11},
-						{X: 5, Y: 13},
-						{X: 6, Y: 11},
-						{X: 6, Y: 13},
-
-						{X: 2, Y: 12},
-						{X: 7, Y: 12},
-					},
-					Corners: []game.Coordinate{
-						{X: 3, Y: 12},
-						{X: 7, Y: 12},
-						{X: 7, Y: 12},
-						{X: 3, Y: 12},
-					},
-					Coordinates: []game.Coordinate{
-						{X: 3, Y: 12},
-						{X: 4, Y: 12},
-						{X: 5, Y: 12},
-						{X: 6, Y: 12},
-					},
-					Width:  4,
-					Height: 1,
-				},
+				p: newPieceP2,
 			},
-			want: []game.Piece{
-				piece1,
-				piece2,
-				{
-					Player: game.Player{
-						ID:    "id-player-2",
-						Name:  "Bob",
-						Score: 0,
-					},
-					Origin: game.Coordinate{X: 3, Y: 12},
-					AdjacentFields: []game.Coordinate{
-						{X: 3, Y: 11},
-						{X: 3, Y: 13},
-						{X: 4, Y: 11},
-						{X: 4, Y: 13},
-						{X: 5, Y: 11},
-						{X: 5, Y: 13},
-						{X: 6, Y: 11},
-						{X: 6, Y: 13},
-
-						{X: 2, Y: 12},
-						{X: 7, Y: 12},
-					},
-					Corners: []game.Coordinate{
-						{X: 3, Y: 12},
-						{X: 7, Y: 12},
-						{X: 7, Y: 12},
-						{X: 3, Y: 12},
-					},
-					Coordinates: []game.Coordinate{
-						{X: 3, Y: 12},
-						{X: 4, Y: 12},
-						{X: 5, Y: 12},
-						{X: 6, Y: 12},
-					},
-					Width:  4,
-					Height: 1,
+			want: game.Board{
+				Width:  8,
+				Height: 12,
+				Corners: []game.Coordinate{
+					{X: 1, Y: 1},
+					{X: 8, Y: 1},
+					{X: 8, Y: 12},
+					{X: 1, Y: 12},
+				},
+				Pieces: []game.Piece{
+					piece1,
+					piece2,
+					newPieceP2,
 				},
 			},
 			wantErr: false,
@@ -364,11 +304,7 @@ func TestBoard_PlacePiece(t *testing.T) {
 			b:    b,
 			args: args{
 				p: game.Piece{
-					Player: game.Player{
-						ID:    "id-player-2",
-						Name:  "Bob",
-						Score: 0,
-					},
+					Player: "id-player-2",
 					Origin: game.Coordinate{X: 4, Y: 12},
 					AdjacentFields: []game.Coordinate{
 						{X: 4, Y: 11},
@@ -399,10 +335,7 @@ func TestBoard_PlacePiece(t *testing.T) {
 					Height: 1,
 				},
 			},
-			want: []game.Piece{
-				piece1,
-				piece2,
-			},
+			want:    b,
 			wantErr: true,
 		},
 		{
@@ -410,11 +343,7 @@ func TestBoard_PlacePiece(t *testing.T) {
 			b:    b,
 			args: args{
 				p: game.Piece{
-					Player: game.Player{
-						ID:    "id-player-2",
-						Name:  "Bob",
-						Score: 0,
-					},
+					Player: "id-player-2",
 					Origin: game.Coordinate{X: 4, Y: 7},
 					AdjacentFields: []game.Coordinate{
 						{X: 4, Y: 6},
@@ -445,10 +374,7 @@ func TestBoard_PlacePiece(t *testing.T) {
 					Height: 1,
 				},
 			},
-			want: []game.Piece{
-				piece1,
-				piece2,
-			},
+			want:    b,
 			wantErr: true,
 		},
 		{
@@ -456,11 +382,7 @@ func TestBoard_PlacePiece(t *testing.T) {
 			b:    b,
 			args: args{
 				p: game.Piece{
-					Player: game.Player{
-						ID:    "id-player-2",
-						Name:  "Bob",
-						Score: 0,
-					},
+					Player: "id-player-2",
 					Origin: game.Coordinate{X: 5, Y: 3},
 					AdjacentFields: []game.Coordinate{
 						{X: 5, Y: 2},
@@ -490,24 +412,23 @@ func TestBoard_PlacePiece(t *testing.T) {
 					Height: 1,
 				},
 			},
-			want: []game.Piece{
-				piece1,
-				piece2,
-			},
+			want:    b,
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := b.PlacePiece(tt.args.p)
+			localBoard := b
+
+			got, err := localBoard.PlacePiece(tt.args.p)
 
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewPiece() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewPiece() got = \n%#v, want \n%#v", got, tt.want)
+			if !reflect.DeepEqual(*got, tt.want) {
+				t.Errorf("NewPiece() got = \n%#v, want \n%#v", *got, tt.want)
 			}
 		})
 	}

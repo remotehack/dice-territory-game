@@ -13,7 +13,7 @@ const (
 
 // Piece holds info about player it belongs to, its own coordinates and dimensions.
 type Piece struct {
-	Player         Player
+	Player         string
 	Origin         Coordinate
 	AdjacentFields []Coordinate
 	Corners        []Coordinate
@@ -29,7 +29,7 @@ type Coordinate struct {
 }
 
 // NewPiece returns a piece if the width and the height are within a given size constraint.
-func NewPiece(player Player, originX uint8, originY uint8, width uint8, height uint8) (Piece, error) {
+func NewPiece(player string, originX uint8, originY uint8, width uint8, height uint8) (Piece, error) {
 	if width <= minPieceWidth || width > maxPieceWidth || height <= minPieceHeight || height > maxPieceHeight {
 		return Piece{}, fmt.Errorf("can't create piece with these dimensions: width: %d, height: %d", width, height)
 	}
