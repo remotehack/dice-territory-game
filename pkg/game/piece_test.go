@@ -135,7 +135,6 @@ func TestNewPiece(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
 			got, err := game.NewPiece(tt.args.player, tt.args.originX, tt.args.originY, tt.args.width, tt.args.height)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewPiece() error = %v, wantErr %v", err, tt.wantErr)
