@@ -150,6 +150,39 @@ func TestBoard_PlacePiece(t *testing.T) {
 				Width:  4,
 				Height: 4,
 			},
+			{
+				Player: game.Player{
+					ID:    "id-player-2",
+					Name:  "Bob",
+					Score: 0,
+				},
+				Origin: game.Coordinate{X: 7, Y: 11},
+				AdjacentFields: []game.Coordinate{
+					{X: 7, Y: 10},
+					{X: 7, Y: 13},
+					{X: 8, Y: 10},
+					{X: 8, Y: 13},
+
+					{X: 6, Y: 11},
+					{X: 9, Y: 11},
+					{X: 6, Y: 12},
+					{X: 9, Y: 12},
+				},
+				Corners: []game.Coordinate{
+					{X: 7, Y: 11},
+					{X: 8, Y: 11},
+					{X: 8, Y: 12},
+					{X: 7, Y: 12},
+				},
+				Coordinates: []game.Coordinate{
+					{X: 7, Y: 11},
+					{X: 8, Y: 11},
+					{X: 8, Y: 12},
+					{X: 7, Y: 12},
+				},
+				Width:  2,
+				Height: 2,
+			},
 		},
 	}
 
