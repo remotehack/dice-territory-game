@@ -195,7 +195,47 @@ func TestBoard_PlacePiece(t *testing.T) {
 		args args
 		want bool
 	}{
-		{},
+		{
+			name: "can place piece for player 1",
+			b:    b,
+			args: args{
+				p: game.Piece{
+					Player: game.Player{
+						ID:    "id-player-1",
+						Name:  "Alice",
+						Score: 0,
+					},
+					Origin: game.Coordinate{X: 5, Y: 3},
+					AdjacentFields: []game.Coordinate{
+						{X: 5, Y: 2},
+						{X: 5, Y: 4},
+						{X: 6, Y: 2},
+						{X: 6, Y: 4},
+						{X: 7, Y: 2},
+						{X: 7, Y: 4},
+						{X: 8, Y: 2},
+						{X: 8, Y: 4},
+						{X: 4, Y: 3},
+						{X: 9, Y: 3},
+					},
+					Corners: []game.Coordinate{
+						{X: 5, Y: 3},
+						{X: 8, Y: 3},
+						{X: 8, Y: 3},
+						{X: 5, Y: 3},
+					},
+					Coordinates: []game.Coordinate{
+						{X: 5, Y: 3},
+						{X: 6, Y: 3},
+						{X: 7, Y: 3},
+						{X: 8, Y: 3},
+					},
+					Width:  4,
+					Height: 1,
+				},
+			},
+			want: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
