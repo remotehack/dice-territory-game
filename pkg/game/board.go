@@ -58,6 +58,13 @@ func isBetween(what uint8, lowerBoundary uint8, upperBoundary uint8) bool {
 }
 
 func (b *Board) canPlacePiece(p Piece) bool {
+	// If any of the coordinates of the new piece are outside of the bounds of the board, it can't be placed.
+	for _, c := range p.Coordinates {
+		if !b.IsCoordinateWithin(c) {
+			return false
+		}
+	}
+
 	// If any of the coordinates of the new piece intersect ANY pieces, it can't be placed.
 	for _, piece := range b.Pieces {
 		for _, c := range p.Coordinates {
@@ -80,6 +87,13 @@ func (b *Board) canPlacePiece(p Piece) bool {
 	}
 
 	return false
+}
+
+func (b *Board) IsCoordinateWithin(c Coordinate) bool {
+	if c.X < 1 || c.X > b.Width || c.Y < 1 || c.Y > b.Height {
+		return false
+	}
+	return true
 }
 
 func (b *Board) PlacePiece(p Piece) (*Board, error) {
