@@ -146,6 +146,46 @@ func TestNewPiece(t *testing.T) {
 			want:    game.Piece{},
 			wantErr: true,
 		},
+		{
+			name: "successfully create 1x1 piece",
+			args: args{
+				player: game.Player{
+					ID:    "playerid-1",
+					Name:  "John",
+					Score: 0,
+				},
+				originX: 4,
+				originY: 6,
+				width:   1,
+				height:  1,
+			},
+			want: game.Piece{
+				Player: game.Player{
+					ID:    "playerid-1",
+					Name:  "John",
+					Score: 0,
+				},
+				Origin: game.Coordinate{X: 4, Y: 6},
+				AdjacentFields: []game.Coordinate{
+					{X: 4, Y: 5},
+					{X: 4, Y: 7},
+					{X: 3, Y: 6},
+					{X: 5, Y: 6},
+				},
+				Corners: []game.Coordinate{
+					{X: 4, Y: 6},
+					{X: 4, Y: 6},
+					{X: 4, Y: 6},
+					{X: 4, Y: 6},
+				},
+				Coordinates: []game.Coordinate{
+					{X: 4, Y: 6},
+				},
+				Width:  1,
+				Height: 1,
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
