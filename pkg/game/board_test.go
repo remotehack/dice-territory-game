@@ -32,6 +32,18 @@ func TestNewBoard(t *testing.T) {
 					{X: 12, Y: 16},
 				},
 				Pieces: []game.Piece{},
+				Players: []game.Player{
+					{
+						ID:    "playerOne",
+						Name:  "playerOne",
+						Score: 0,
+					},
+					{
+						ID:    "playerTwo",
+						Name:  "playerTwo",
+						Score: 0,
+					},
+				},
 			},
 			wantErr: false,
 		},
@@ -74,7 +86,7 @@ func TestNewBoard(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := game.NewBoard(tt.args.width, tt.args.height)
+			got, err := game.NewBoard(tt.args.width, tt.args.height, "playerOne", "playerTwo")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewBoard() error = %v, wantErr %v", err, tt.wantErr)
 				return

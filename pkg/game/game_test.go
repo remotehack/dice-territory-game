@@ -24,12 +24,11 @@ func TestNew(t *testing.T) {
 		{
 			name: "New Game with correct size",
 			args: args{
-
 				Session:     "1",
 				BoardHeight: 12,
 				BoardWidth:  16,
-				PlayerOne:   "iii",
-				PlayerTwo:   "ccc",
+				PlayerOne:   "playerOne",
+				PlayerTwo:   "playerTwo",
 			},
 			want: game.Game{
 				Session: "1",
@@ -37,9 +36,29 @@ func TestNew(t *testing.T) {
 					Width:  12,
 					Height: 16,
 					Pieces: []game.Piece{},
+					Corners: []game.Coordinate{
+						{
+							X: 1,
+							Y: 1,
+						},
+						{
+							X: 12,
+							Y: 16,
+						},
+					},
+					Players: []game.Player{
+						{
+							ID:    "playerOne",
+							Name:  "playerOne",
+							Score: 0,
+						},
+						{
+							ID:    "playerTwo",
+							Name:  "playerTwo",
+							Score: 0,
+						},
+					},
 				},
-				PlayerOne: "iii",
-				PlayerTwo: "ccc",
 			},
 			wantErr: false,
 		},
@@ -104,7 +123,7 @@ func TestNew(t *testing.T) {
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("New() got = %v, want %v", got, tt.want)
+				t.Errorf("New() got = \n%v, want \n%v", got, tt.want)
 			}
 		})
 	}

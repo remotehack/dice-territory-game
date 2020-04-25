@@ -15,12 +15,13 @@ const (
 type Board struct {
 	Width   uint8
 	Height  uint8
+	Players []Player
 	Corners []Coordinate
 	Pieces  []Piece
 }
 
 // Returns a new instance of a board with given height and width.
-func NewBoard(width uint8, height uint8) (Board, error) {
+func NewBoard(width uint8, height uint8, playerOne string, playerTwo string) (Board, error) {
 	if !isBetween(height, minBoardHeight, maxBoardHeight) {
 		return Board{}, fmt.Errorf("board height is out of bounds. Got %d, need to be between %d and %d inclusive", height, minBoardHeight, maxBoardHeight)
 	}
@@ -36,7 +37,19 @@ func NewBoard(width uint8, height uint8) (Board, error) {
 	// Bottom right corner (start for player 2)
 	c = append(c, Coordinate{X: width, Y: height})
 
-	return Board{Width: width, Height: height, Corners: c, Pieces: []Piece{}}, nil
+	p1, err := NewPlayer(playerOne, playerOne)
+	if err != nil {
+		return Board{}, fmt.Errorf("game: NewBoard(): %w", err)
+	}
+
+	p2, err := NewPlayer(playerTwo, playerTwo)
+	if err != nil {
+		return Board{}, fmt.Errorf("game: NewBoard(): %w", err)
+	}
+
+	players := []Player{p1, p2}
+
+	return Board{Width: width, Height: height, Corners: c, Players: players, Pieces: []Piece{}}, nil
 }
 
 // Utility function to check whether the board is the right size.
