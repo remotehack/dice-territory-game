@@ -11,6 +11,8 @@ func TestNewBoard(t *testing.T) {
 	type args struct {
 		width  uint8
 		height uint8
+		p1     string
+		p2     string
 	}
 	tests := []struct {
 		name    string
@@ -23,6 +25,8 @@ func TestNewBoard(t *testing.T) {
 			args: args{
 				width:  12,
 				height: 16,
+				p1:     "playerOne",
+				p2:     "playerTwo",
 			},
 			want: game.Board{
 				Width:  12,
@@ -52,6 +56,8 @@ func TestNewBoard(t *testing.T) {
 			args: args{
 				width:  4,
 				height: 16,
+				p1:     "playerOne",
+				p2:     "playerTwo",
 			},
 			want:    game.Board{},
 			wantErr: true,
@@ -61,6 +67,8 @@ func TestNewBoard(t *testing.T) {
 			args: args{
 				width:  127,
 				height: 16,
+				p1:     "playerOne",
+				p2:     "playerTwo",
 			},
 			want:    game.Board{},
 			wantErr: true,
@@ -70,6 +78,8 @@ func TestNewBoard(t *testing.T) {
 			args: args{
 				width:  12,
 				height: 4,
+				p1:     "playerOne",
+				p2:     "playerTwo",
 			},
 			want:    game.Board{},
 			wantErr: true,
@@ -79,6 +89,30 @@ func TestNewBoard(t *testing.T) {
 			args: args{
 				width:  12,
 				height: 127,
+				p1:     "playerOne",
+				p2:     "playerTwo",
+			},
+			want:    game.Board{},
+			wantErr: true,
+		},
+		{
+			name: "Error, player one has no name",
+			args: args{
+				width:  12,
+				height: 16,
+				p1:     "",
+				p2:     "playerTwo",
+			},
+			want:    game.Board{},
+			wantErr: true,
+		},
+		{
+			name: "Error, player two has no name",
+			args: args{
+				width:  12,
+				height: 16,
+				p1:     "playerOne",
+				p2:     "",
 			},
 			want:    game.Board{},
 			wantErr: true,
@@ -86,7 +120,7 @@ func TestNewBoard(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := game.NewBoard(tt.args.width, tt.args.height, "playerOne", "playerTwo")
+			got, err := game.NewBoard(tt.args.width, tt.args.height, tt.args.p1, tt.args.p2)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewBoard() error = %v, wantErr %v", err, tt.wantErr)
 				return
