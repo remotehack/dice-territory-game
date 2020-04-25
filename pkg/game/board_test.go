@@ -27,6 +27,10 @@ func TestNewBoard(t *testing.T) {
 			want: game.Board{
 				Width:  12,
 				Height: 16,
+				Corners: []game.Coordinate{
+					{X: 0, Y: 0},
+					{X: 11, Y: 15},
+				},
 				Pieces: []game.Piece{},
 			},
 			wantErr: false,
